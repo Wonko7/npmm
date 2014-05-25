@@ -64,7 +64,7 @@ let barycentre l =
 
 (* prend 2 objets, verifie les collisions par bounding box, mettre a jour *)
 
-let impact obj1 obj2 mob oc_out=
+let impact obj1 obj2 mob =
   let c1 = !obj1#get_corners and c2 = !obj2#get_corners and l = ref [] in
   let l1 = make_functions c1 and l2 = make_functions c2 in
   for i=0 to 3 do
@@ -93,10 +93,9 @@ let impact obj1 obj2 mob oc_out=
 
     let dis = norm (cplx x y -- !mob#get_coord) in
     
-    if dis < 150. then
-      (output_string oc_out ("collide "^(string_of_int (int_of_float (200.-.dis)))^"\n"); 
-       flush oc_out);
-    !l end else [];;
+    if dis < 150. then (); !l
+  end
+  else [];;
 
 
 
@@ -277,11 +276,11 @@ draw_liste (rgb 0 0 255) !generatrices;; *)
 
 
 
-let rec crash_dummies car liste mob oc_out=
+let rec crash_dummies car liste mob =
   match !liste with
     [] -> ()
   |e::l -> 
       if (sphere !car e) 
-      then ignore (impact car (ref e) mob oc_out);
-      crash_dummies car (ref l)  mob oc_out;;
+      then ignore (impact car (ref e) mob );
+      crash_dummies car (ref l)  mob;;
 

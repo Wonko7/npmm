@@ -854,8 +854,8 @@ let generatrices = ref [];;
 let liste = ref list_mob;;
 let livraison = ref (generate 4);;
 let oc_in, oc_out = Unix.open_process "/bin/cat > /dev/null";; 
-output_string oc_out "add 0 car\n";
-flush oc_out;
+(* output_string oc_out "add 0 car\n";
+flush oc_out; *)
 ronde (!mob#get_case) Init immeubles generatrices;
 
 
@@ -946,7 +946,7 @@ let rec treat_ia mob carte  immeubles mob oc_out tmp_gen= function
       |5 -> turn ia (x,y) (5,2)
       |7 -> turn ia (x,y) (7,2)
       |n -> turn ia (x,y) (path dir (got_it n 2) carr (x,y)));
-      react_ia ia (ref tmp) mob oc_out;
+      react_ia ia (ref tmp) mob;
 
       let dis = (distance !mob !ia) in
       if  dis < 150. then
@@ -959,7 +959,7 @@ let rec treat_ia mob carte  immeubles mob oc_out tmp_gen= function
       else 
 	(output_string oc_out ("suppr "^(!ia#get_name)^"\n");
 	 flush oc_out;);
-      crash_dummies ia immeubles mob oc_out;
+      crash_dummies ia immeubles mob;
       tmp_gen := vire_de_la_liste (!ia#get_case) (!tmp_gen);
 
 
@@ -1030,7 +1030,7 @@ let bprincipale () =
 
 
 
-    crash_dummies mob immeubles  mob oc_out;
+    crash_dummies mob immeubles mob;
     output_string oc_out ("frqce 0 "^(!mob#get_frequence)^"\n"); 
     flush oc_out;
     

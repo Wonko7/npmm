@@ -149,11 +149,11 @@ let ralentit vehic mob  =
 
 
 
-let rec react_ia car list  mob oc_out= match !list with
+let rec react_ia car list  mob = match !list with
   [] -> ()
 |autre::l ->
     let dis = distance !car !autre in
-    if (sphere !car !autre) then ignore (impact car autre mob oc_out);
+    if (sphere !car !autre) then ignore (impact car autre mob);
     if dis <= distance_min then
       begin
 	if ralentit !car !autre then 
@@ -162,7 +162,7 @@ let rec react_ia car list  mob oc_out= match !list with
 	if ralentit !autre !car then
 	    !autre#set_push (0.,1.9);
       end;
-    react_ia car (ref l) mob oc_out;;
+    react_ia car (ref l) mob;;
 
 
 
