@@ -835,7 +835,7 @@ let reshape_cb ~w ~h =
 (*********************************************)
 
 
-let mob =  new voiture(cplx 600. 375.,0.,cplx 200. 375.,3,Sys.time ());;
+let mob =  new voiture(cplx 600. 425.,0.,cplx 000. 0.,3,Sys.time ());;
 
 let bu = ref mob;;
 
