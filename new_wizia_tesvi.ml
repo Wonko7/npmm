@@ -853,9 +853,6 @@ let immeubles = ref [];;
 let generatrices = ref [];; 
 let liste = ref list_mob;;
 let livraison = ref (generate 4);;
-let oc_in, oc_out = Unix.open_process "/bin/cat > /dev/null";; 
-(* output_string oc_out "add 0 car\n";
-flush oc_out; *)
 ronde (!mob#get_case) Init immeubles generatrices;
 
 
@@ -930,7 +927,7 @@ end;;
 (*                GESTION IA                 *)
 (*********************************************)
 
-let rec treat_ia mob carte  immeubles mob oc_out tmp_gen= function
+let rec treat_ia mob carte  immeubles mob tmp_gen= function
     [e] -> [e]
   |ia::tmp -> if (norm (!ia#get_coord -- !ia#get_ia) < !ia#get_rayon) then
       (let (x,y) = !ia#get_case and dir = !ia#get_dir and carr = !ia#get_carr in
@@ -948,17 +945,6 @@ let rec treat_ia mob carte  immeubles mob oc_out tmp_gen= function
       |n -> turn ia (x,y) (path dir (got_it n 2) carr (x,y)));
       react_ia ia (ref tmp) mob;
 
-      let dis = (distance !mob !ia) in
-      if  dis < 150. then
-	(output_string oc_out ("add "^(!ia#get_name)^" car\n");
-	 flush oc_out;
-	 output_string oc_out ("volume "^(!ia#get_name)^" "^(string_of_int (int_of_float (255.-.dis)))^"\n");
-	 flush oc_out;
-	 output_string oc_out ("frqce "^(!ia#get_name)^" "^(!ia#get_frequence)^"\n"); 
-	 flush oc_out;)
-      else 
-	(output_string oc_out ("suppr "^(!ia#get_name)^"\n");
-	 flush oc_out;);
       crash_dummies ia immeubles mob;
       tmp_gen := vire_de_la_liste (!ia#get_case) (!tmp_gen);
 
@@ -972,9 +958,9 @@ let rec treat_ia mob carte  immeubles mob oc_out tmp_gen= function
 
       !ia#chock();
       if (distance !mob !ia) > 212. then   (*supression des vehicules trop éloignés*)
-	treat_ia mob carte immeubles mob oc_out tmp_gen tmp
+	treat_ia mob carte immeubles mob tmp_gen tmp
       else      
-	ia::treat_ia mob carte immeubles mob oc_out tmp_gen tmp;;
+	ia::treat_ia mob carte immeubles mob tmp_gen tmp;;
 
 
 
@@ -1031,12 +1017,10 @@ let bprincipale () =
 
 
     crash_dummies mob immeubles mob;
-    output_string oc_out ("frqce 0 "^(!mob#get_frequence)^"\n"); 
-    flush oc_out;
     
     let tmp_gen = ref (!generatrices) in
     
-    liste := treat_ia mob (ref mappy) immeubles mob oc_out tmp_gen !liste;
+    liste := treat_ia mob (ref mappy) immeubles mob tmp_gen !liste;
     
     new_cars liste !tmp_gen;
 
