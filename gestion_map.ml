@@ -1,5 +1,7 @@
 (*map test*)
 
+print_string "aoeu\n";
+flush stdout;;
 open Array;;
 class case (type_init:int) =
   object
@@ -22,8 +24,9 @@ let ordonnee = 10;;
 let fmdead = (input_line map);;
 let fmdead = (input_line map);;
 
+print_string "aoeu\n";
+flush stdout;;
 let mappy = let tmp = new case 0 in create_matrix ordonnee abscisse tmp;;
-
 
 
 let rec store m map x y =
@@ -32,7 +35,12 @@ let rec store m map x y =
         else store m map 0 (y+1);
 with End_of_file -> ();;
 
+
 store mappy map 0 0;;
+print_string "aoeu\n";
+flush stdout;;
 close_in map;;
 
 
+print_string "aoeu\n";
+flush stdout;;
