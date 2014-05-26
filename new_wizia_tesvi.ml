@@ -951,7 +951,7 @@ let rec treat_ia mob carte  immeubles mob tmp_gen= function
 
 
       let (a,b) = !ia#get_push in
-      !ia#push(a*.300.,if_under (arg (pivot (!ia#get_ia-- !ia#get_coord) (-. arg !ia#get_vitesse))) (pi/.6.),b *. (-.10.));
+      !ia#push(a*.1000.,if_under (arg (pivot (!ia#get_ia-- !ia#get_coord) (-. arg !ia#get_vitesse))) (pi/.6.),b *. (-.10.));
       !ia#reset_push;
 
 
