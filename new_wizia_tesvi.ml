@@ -835,7 +835,7 @@ let reshape_cb ~w ~h =
 (*********************************************)
 
 
-let mob =  new voiture(cplx 600. 425.,0.,cplx 000. 0.,3,Sys.time ());;
+let mob =  new voiture(cplx 600. 425.,0.,cplx 000. 0.,3,Sys.time (), 0);;
 
 let bu = ref mob;;
 
@@ -1011,7 +1011,8 @@ let bprincipale () =
    
    
    
-   let virage = (float_of_bool !j) *. (-.pi/.1.5) +. (float_of_bool !l) *. (pi/.1.5) in
+   let virage = (float_of_bool !j) *. (-.pi/.50.5) +. (float_of_bool !l) *.
+   (pi/.50.5) in
    ignore (!mob#push((float_of_bool !i) *. 4600.+.10.,virage,(float_of_bool !k) *. (-.10.)));
 
 

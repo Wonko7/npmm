@@ -13,6 +13,9 @@ let aero = -.0.4;;         (* taux de frottements dus a l'air *)
 let bitume = 90.;;       (* taux de frottements dus au bitume *)
 let no_neg x = if x < 0. then 0. else x;;
 
+let rayon_mob = 5.;;
+let envergure_mob = pi /. 15.;;
+
 let vitesse_limite = 10.;;
 
 let distance_min = 70.;;

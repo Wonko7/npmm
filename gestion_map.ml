@@ -26,7 +26,10 @@ let mappy = let tmp = new case 0 in create_matrix ordonnee abscisse tmp;;
 
 
 
-let rec store m map x y = try let n = int_of_char(input_char map) in if (n<>33) then let tmp = new case n in (m.(y).(x)<- tmp; store m map (x+1) y) else store m map 0 (y+1);
+let rec store m map x y =
+        try let n = int_of_char(input_char map) in
+        if (n<>33) then let tmp = new case n in (m.(y).(x)<- tmp; store m map (x+1) y)
+        else store m map 0 (y+1);
 with End_of_file -> ();;
 
 store mappy map 0 0;;

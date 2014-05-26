@@ -94,10 +94,10 @@ compt_cars := !compt_cars + 1;
 let create_car_light (x,y,dir) list=
   let coord_x = taille_case*.(float_of_int(x)+.0.5) and coord_y = (475. -. float_of_int(y)*.taille_case) in
 match dir with
-       2         -> list := ref(new voiture (cplx coord_x (coord_y-.taille_case/.2.+.1.),(pi/.2.),cplx coord_x (coord_y +. taille_case/.2.),2,Sys.time()))::!list;
-    |  3         -> list := ref(new voiture (cplx (coord_x-.taille_case/.2.+.1.) coord_y,0.,cplx (coord_x +.taille_case/.2.) coord_y,3,Sys.time()))::!list;
-    |  5         -> list := ref(new voiture (cplx coord_x (coord_y+.taille_case/.2.-.1.),3.*.(pi/.2.),cplx coord_x (coord_y -. taille_case/.2.),5,Sys.time()))::!list;
-    |  7         -> list := ref(new voiture (cplx (coord_x+.taille_case/.2.-.1.) coord_y,pi,cplx (coord_x -. taille_case/.2.) coord_y,7,Sys.time()))::!list;;
+       2         -> list := ref(new voiture (cplx coord_x (coord_y-.taille_case/.2.+.1.),(pi/.2.),cplx coord_x (coord_y +.  taille_case/.2.),2,Sys.time(), 1))::!list;
+    |  3         -> list := ref(new voiture (cplx (coord_x-.taille_case/.2.+.1.) coord_y,0.,cplx (coord_x +.taille_case/.2.) coord_y,3,Sys.time(), 1))::!list;
+    |  5         -> list := ref(new voiture (cplx coord_x (coord_y+.taille_case/.2.-.1.),3.*.(pi/.2.),cplx coord_x (coord_y -.  taille_case/.2.),5,Sys.time(),1))::!list;
+    |  7         -> list := ref(new voiture (cplx (coord_x+.taille_case/.2.-.1.) coord_y,pi,cplx (coord_x -. taille_case/.2.) coord_y,7,Sys.time(),1))::!list;;
 
 
 

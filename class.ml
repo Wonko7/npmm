@@ -35,7 +35,8 @@ end;;
 
 
 
-class voiture(coord_init,arg_init,(ia_init:Complex.t),(dir_init:int),(time_init:float)) =
+class
+voiture(coord_init,arg_init,(ia_init:Complex.t),(dir_init:int),(time_init:float),kind) =
   object
 
       val mutable pencher = 0.
@@ -44,16 +45,14 @@ class voiture(coord_init,arg_init,(ia_init:Complex.t),(dir_init:int),(time_init:
       method get_col2 = col2
       method set_col2(c) = col2 <- c
 
-
-
       val mutable coord = coord_init          (* coordonnees en complexe *)
       val mutable vitesse = zero              (* vecteur vitesse en complexe *)
       val mutable moteur = polar 2. arg_init  (* acceleration due au moteur *)
       val mutable frottements = zero          (* frottements *)
       val mutable collisions = zero           (* collisions *)
       val mutable delay = time_init           (* temps de reference *)
-      val rayon = rayon_voiture               (* rayon du cercle conscrit au vehicule *)
-      val envergure = envergure_voiture       (* angle definissant les 4 coins du vehicule *)
+      val rayon = if kind = 1 then rayon_voiture else rayon_mob              (* rayon du cercle conscrit au vehicule *)
+      val envergure = if kind = 1 then envergure_voiture else envergure_mob       (* angle definissant les 4 coins du vehicule *)
       val mutable acceleration = zero 
       val masse = 10.;
       val mutable temp_turn = (0.,0.)
@@ -64,7 +63,7 @@ class voiture(coord_init,arg_init,(ia_init:Complex.t),(dir_init:int),(time_init:
       val mutable frequence = 11000.
       method get_frequence = string_of_int (int_of_float frequence)
       method set_frequence(f) = frequence <- f
-      val l = rayon_voiture *. 2. *. envergure_voiture
+      val l = if kind = 1 then rayon_voiture *. 2. *. envergure_voiture else rayon_mob *. 2. *. envergure_mob
 
       val mutable ia = ia_init
       method get_ia = ia
@@ -109,7 +108,7 @@ class voiture(coord_init,arg_init,(ia_init:Complex.t),(dir_init:int),(time_init:
       val corners =
 	let x = coord_init.re
 	and y = coord_init.im
-	and r = rayon_voiture
+        and r = if kind = 1 then rayon_voiture else rayon_mob
 	and angle = arg_init
 	and envergure = envergure_voiture in
 	((x+.r*.cos (angle-.envergure),y+.r*.sin (angle-.envergure)),(x+.r*.cos (angle+.envergure),y+.r*.sin (angle+.envergure)),(x+.r*.cos (angle-.envergure+.pi),y+.r*.sin (angle-.envergure+.pi)),(x+.r*.cos (angle+.envergure+.pi),y+.r*.sin (angle+.envergure+.pi)))
