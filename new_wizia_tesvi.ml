@@ -773,7 +773,7 @@ let rec draw_minimob l = match l with
   |e::[] ->
             if bminimap then
               let ((x1,y1),(x2,y2),(x3,y3),(x4,y4)) = !e#get_corners in 
-              let (x5,y5) = ((x1+.x2+.x3+.x4)/.4.,(y1+.y2+.y3+.y4)/.4.) in 
+              let (x5,y5) = ((x1+.x2+.x3+.x4)/.4.,(y1+.y2+.y3+.y4)/.4. +. 100.) in 
                         GlDraw.begins `quads;
                         GlDraw.color (0.26,0.24,0.85);
                         GlDraw.vertex3 ((x5-.50.)*.scale3,0.00,(y5)*.scale3*. -1.);
