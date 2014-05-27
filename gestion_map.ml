@@ -1,6 +1,5 @@
 (*map test*)
 
-print_string "aoeu\n";
 flush stdout;;
 open Array;;
 class case (type_init:int) =
@@ -19,28 +18,20 @@ end;;
 
 
 let map=open_in "map.txt";;
-let abscisse = 16;;
-let ordonnee = 10;;
-let fmdead = (input_line map);;
-let fmdead = (input_line map);;
+let abscisse = int_of_string (input_line map);;
+let ordonnee = int_of_string (input_line map);;
 
-print_string "aoeu\n";
-flush stdout;;
-let mappy = let tmp = new case 0 in create_matrix ordonnee abscisse tmp;;
+let mappy = let tmp = new case 0 in create_matrix ordonnee  abscisse tmp;;
 
 
 let rec store m map x y =
         try let n = int_of_char(input_char map) in
-        if (n<>33) then let tmp = new case n in (m.(y).(x)<- tmp; store m map (x+1) y)
-        else store m map 0 (y+1);
+        if (n<>33) then (if (y < ordonnee) && (x < abscisse) then (let tmp = new case n in m.(y).(x)<- tmp) else ();
+                         store m map (x+1) y)
+                   else store m map 0 (y+1);
 with End_of_file -> ();;
 
 
 store mappy map 0 0;;
-print_string "aoeu\n";
-flush stdout;;
+
 close_in map;;
-
-
-print_string "aoeu\n";
-flush stdout;;
