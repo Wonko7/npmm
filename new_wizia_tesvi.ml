@@ -910,7 +910,7 @@ begin
   fleche_drawlist ();
   draw_map ();
 
-  draw_cars2 !liste; 
+  (* draw_cars2 !liste; *)
   draw_cars  !liste;  
   fleche_drawlist ();
   GlMat.load_identity ();
