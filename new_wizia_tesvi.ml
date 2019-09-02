@@ -4,16 +4,16 @@ let cdeg      =  180./.pi;;
 
 
 
-(**** 
+(****
 vous etes mignons et tout avec vos complexes, mais ca m'aurai
-arrangé que vous n'ayez pas redefini les fonctions sur les 
-floats comme ** (puissance) ou sqrt... 
+arrangé que vous n'ayez pas redefini les fonctions sur les
+floats comme ** (puissance) ou sqrt...
 
-a part les modifs dans ce fichier j'ai rajouté des choses dans : 
+a part les modifs dans ce fichier j'ai rajouté des choses dans :
 gestion map.ml (type de la map)
 
 
-TO DO : 
+TO DO :
 -affichage vehicules (if couleur = (2. 2. 2.) set rand)
 -boussole
 -barre de temps
@@ -63,13 +63,13 @@ let scale     =  2.5*.scale2;;
 let scale3    =  (25.*.0.0017 *. scale2/. float_of_int (max (length mappy.(0) -1) (length mappy -1)));;
 let broues    =  ref false;;
 let chrono    =  ref 1.;;
-let i         =  ref false;; 
-let j         =  ref false;; 
-let k         =  ref false;; 
-let l         =  ref false;; 
+let i         =  ref false;;
+let j         =  ref false;;
+let k         =  ref false;;
+let l         =  ref false;;
 let vmax      =  151.657508881;;
-let bangle    =  ref 1.;; 
-let vue       =  ref false;; 
+let bangle    =  ref 1.;;
+let vue       =  ref false;;
 let njj       =  length mappy -1;;
 let nii       =  length mappy.(0) -1;;
 let temps     =  Sys.time ();;
@@ -86,9 +86,9 @@ let col_route = (0.55,0.55,0.55);;
 (*********************************************)
 
 
-let c2p (x,y) = Pervasives.sqrt(x*.x +. y*.y), 
-  if x>0. then atan (y /. x) 
-          else 
+let c2p (x,y) = Pervasives.sqrt(x*.x +. y*.y),
+  if x>0. then atan (y /. x)
+          else
             let deno = (Pervasives.sqrt(x*.x +. y*.y)) in
 	    if deno <> 0. then acos (y /. deno)+.pi/.2.
                           else acos (y /. (1./.99999000.))+.pi/.2.
@@ -96,56 +96,56 @@ let c2p (x,y) = Pervasives.sqrt(x*.x +. y*.y),
 
 let p2c (r,o) = ((cos o)*.r,(sin o)*.r);;
 
-let gnorme (x,y,z) = 
+let gnorme (x,y,z) =
   Pervasives.sqrt (x*.x +. y*.y +. z*.z) ;;
 
-let normalize (x,y,z) = 
+let normalize (x,y,z) =
   let n=gnorme (x,y,z) in
     (x/.n,y/.n,z/.n) ;;
 
-let dotpr (a,b,c) (x,y,z) = 
+let dotpr (a,b,c) (x,y,z) =
   a*.x +. b*.y +. c*.z ;;
 
-let rotvect (l) (a,b,c) ang = 
+let rotvect (l) (a,b,c) ang =
   let ang = ang/.cdeg in
-          match l with 
-   (1.0,0.0,0.0) -> let r,o = c2p (b,c)       in 
-                    let b,c = p2c(r,o+.ang)   in 
+          match l with
+   (1.0,0.0,0.0) -> let r,o = c2p (b,c)       in
+                    let b,c = p2c(r,o+.ang)   in
                 normalize     (a,b,c)
-  |(0.0,1.0,0.0) -> let r,o = c2p (c,a)       in 
-                    let c,a = p2c(r,o+.ang)   in 
+  |(0.0,1.0,0.0) -> let r,o = c2p (c,a)       in
+                    let c,a = p2c(r,o+.ang)   in
                  normalize    (a,b,c)
-  |            _ -> let r,o = c2p (a,b)       in 
-                    let a,b = p2c(r,o+.ang)   in 
+  |            _ -> let r,o = c2p (a,b)       in
+                    let a,b = p2c(r,o+.ang)   in
                   normalize   (a,b,c)
 ;;
 
 
-let gnormal (a,b,c) (i,j,k) (x,y,z) = 
- let (a,b,c) = (a-.i,b-.j,c-.k) and 
+let gnormal (a,b,c) (i,j,k) (x,y,z) =
+ let (a,b,c) = (a-.i,b-.j,c-.k) and
      (x,y,z) = (x-.i,y-.j,z-.k) in
      normalize (b*.z -. c*.y, c*.x -. a*.z, a*.y -. b*.x);;
 
 
-let p_vect (a,b,c) = 
+let p_vect (a,b,c) =
 begin
   print_float a;
   print_string "-";
-  print_float b; 
+  print_float b;
   print_string "-";
   print_float c;
-  print_string " 
+  print_string "
 "
 end;;
 
-let multrouple (a,b,c) d = 
+let multrouple (a,b,c) d =
   (a*.d,b*.d,c*.d);;
 
-let addtrouple (a,b,c) d = 
-  let coupe = function 
+let addtrouple (a,b,c) d =
+  let coupe = function
       u when u>=1. -> 1.
-    | u when u<=0. -> 0.   
-    | u            -> u 
+    | u when u<=0. -> 0.
+    | u            -> u
   in
 
   let x = a+.d and
@@ -158,10 +158,10 @@ let addtrouple (a,b,c) d =
 let cs_s () =
 begin
 	GlDraw.polygon_mode `both  `line;
-	GlDraw.line_width linesize; 
+	GlDraw.line_width linesize;
         GlDraw.color (0.0,0.0,0.0);
 (*      Gl.enable `blend;
-        ligne mieux definie, mais avec blanc    *) 
+        ligne mieux definie, mais avec blanc    *)
         GlFunc.blend_func `src_alpha `one_minus_src_alpha;
 (*
 	GlDraw.polygon_mode `both  `line;
@@ -175,7 +175,7 @@ end;;
 
 let cs_e () =
 begin
-        Gl.disable `blend; 
+        Gl.disable `blend;
 (*  	GlFunc.depth_func `less;
 	 GlDraw.cull_face `back;*)
 	 GlDraw.polygon_mode `both `fill;
@@ -190,14 +190,14 @@ end;;
  (*********************************************)
 
 
- let randcol () = 
+ let randcol () =
    let l = 0.5 in
  (l+.Random.float (1. -. l),l+.Random.float (1. -. l),l+.Random.float (1. -. l));;
 
 
 (**
   *
-  * borders : 
+  * borders :
   * 0 : none
   * 1 : exterior
   * 2 : all edges
@@ -205,9 +205,9 @@ end;;
   **)
 
 let rec colorize a b c d color l border =
-  let step = 0.1 and 
+  let step = 0.1 and
        ang = dotpr (gnormal a b c) l in
-   
+
   if border=0 then
     begin
       GlDraw.begins `quads;
@@ -239,11 +239,11 @@ let rec colorize a b c d color l border =
                            GlDraw.vertex3 c;
                            GlDraw.vertex3 d;
      );
-    GlDraw.ends (); 
+    GlDraw.ends ();
   end
-  else if border=1 then   
-    (   
-       if dotpr !ccam (gnormal a b c) <= 0.00 then 
+  else if border=1 then
+    (
+       if dotpr !ccam (gnormal a b c) <= 0.00 then
 (*          colorize a b c d color l 2   *)
             begin
               colorize a b c d color l 0;
@@ -251,23 +251,23 @@ let rec colorize a b c d color l border =
         	GlDraw.line_width linesize;
                 GlDraw.cull_face `front;
         	GlFunc.depth_func `lequal;
-	(*        Gl.enable `blend;      
+	(*        Gl.enable `blend;
                 GlFunc.blend_func `src_alpha `one_minus_src_alpha;*)
-                GlDraw.color (0.0,0.0,0.0); 
+                GlDraw.color (0.0,0.0,0.0);
               GlDraw.begins `quads;
               GlDraw.vertex3 a;
               GlDraw.vertex3 b;
               GlDraw.vertex3 c;
               GlDraw.vertex3 d;
-              GlDraw.ends ();    
+              GlDraw.ends ();
            	GlFunc.depth_func `less;
         	GlDraw.cull_face `back;
 	        GlDraw.polygon_mode `both `fill;
 
-            end 
+            end
        else colorize a b c d color l 0
      )
-   else 
+   else
      begin
            colorize a b c d color l 0;
            cs_s ();
@@ -276,16 +276,16 @@ let rec colorize a b c d color l border =
            GlDraw.vertex3 b;
            GlDraw.vertex3 c;
            GlDraw.vertex3 d;
-           GlDraw.ends ();    
-           cs_e (); 
+           GlDraw.ends ();
+           cs_e ();
      end
 ;;
 
 
 let dcube (a::b::c::d::e::f::g::h::[]) (c1::c2::c3::c4::c5::c6::[]) border =
 begin
-  if !broues then 
-    begin 
+  if !broues then
+    begin
   GlDraw.begins `quads;
   colorize a b c d c1 !clight 0;
   colorize b e h c c2 !clight border;
@@ -294,7 +294,7 @@ begin
   colorize f e b a c5 !clight border;
   colorize d c h g c6 !clight border;
   GlDraw.ends ()
-    end 
+    end
   else
   begin
   GlDraw.begins `quads;
@@ -307,7 +307,7 @@ begin
   GlDraw.ends ()
   end;
 end;;
-  
+
 
 (*********************************************)
 (*   MOBILETTE                               *)
@@ -337,21 +337,21 @@ let mlist3 = [
 (**** ini ****)
 
 
-let rec create_col_list l1 l2 = 
-  match (l1,l2) with 
+let rec create_col_list l1 l2 =
+  match (l1,l2) with
     ([],_) -> []
-  |(0::l1,e::l2) -> create_col_list l1 l2 
+  |(0::l1,e::l2) -> create_col_list l1 l2
   |(i::l1,e::l2) -> e::(create_col_list ((i-1)::l1) (e::l2));;
 
-let mlist1col = 
+let mlist1col =
   let cadre = (0.0,0.4,0.0) in
     create_col_list [14;1;3;1;5] [cadre;(0.8,0.0,0.0);cadre;(0.9,0.85,0.0);cadre];;
 
-let mlist2col = 
+let mlist2col =
   let chrome = (1.0,1.0,1.0) in
     create_col_list [36] [chrome];;
 
-let mlist3col = 
+let mlist3col =
   let tissu = (0.8,0.1,0.1) in
     create_col_list [18] [tissu];;
 
@@ -368,7 +368,7 @@ let mlist3 = scale_list mlist3 scale;;
 
 (*******pour les roues*******)
 
-let roues p r1 r2 e = 
+let roues p r1 r2 e =
   let rec boucle ang p r1 r2 e =
     if ang >= pi*.2. then (* [(e,0.,r2);(e*. -1.,0.,r2);(e*. -1.,0.,r1);(e,0.,r1)] *)(e*. -1.,0.,r2)::(e,0.,r2)::(e,0.,r1)::(e*. -1.,0.,r1)::[]
       else let (c,s) = (cos ang, sin ang) in
@@ -379,24 +379,24 @@ let roues p r1 r2 e =
 (e,0.,r2)::(e*. -1.,0.,r2)::(e*. -1.,0.,r1)::(e,0.,r1)::(boucle 0. p r1 r2 e);;
 
 
-let rec create_rcol p chrome pneu = 
-  if p=0 then [] 
+let rec create_rcol p chrome pneu =
+  if p=0 then []
          else  pneu::pneu::pneu::pneu::pneu::chrome::(create_rcol (p-1) chrome pneu);;
 
 let rlist2 = (roues 142. (scale*.0.75*.7.) (scale*.7.) (scale*.0.25*.7.));;
 let rlist1 = (roues 20. (scale*.0.75) (scale) (scale*.0.25)) ;;
 let chrome = (1.0,1.0,1.0) and pneu = (0.8,0.5,0.5);;
-let clist2 = create_col_list [(int_of_float 142.)*6+6] [chrome] and 
+let clist2 = create_col_list [(int_of_float 142.)*6+6] [chrome] and
     clist1 = create_rcol ((int_of_float 20.)+1) chrome pneu;;
 
-let droues () = 
+let droues () =
 
   let rec plist l col bord= (match (l,col) with
      ([],_)                 -> ()
  |(a::b::c::d::e::f::g::h::l, o1::o2::o3::o4::o5::o6::l2) -> dcube (a::b::c::d::e::f::g::h::[]) (o1::o2::o3::o4::o5::o6::[]) (bord);plist l l2 bord
  | _ -> ())
-in 
-  begin 
+in
+  begin
     plist rlist1 clist1 1;
   end;;
 
@@ -405,21 +405,21 @@ in
 (**** tout ****)
 
 
-let dmob () = 
+let dmob () =
   let rec plist l col bord= (match (l,col) with
      ([],_)                 -> ()
  |(a::b::c::d::e::f::g::h::l, o1::o2::o3::o4::o5::o6::l2) -> dcube (a::b::c::d::e::f::g::h::[]) (o1::o2::o3::o4::o5::o6::[]) (bord);plist l l2 bord)
-in 
-  begin 
+in
+  begin
     plist mlist1 mlist1col !bord;
-    plist mlist2 mlist2col !bord; 
+    plist mlist2 mlist2col !bord;
     plist mlist3 mlist3col !bord;
     GlMat.translate3 (0. ,1.0*.scale,0.8*.scale);
-      broues := true;  
+      broues := true;
       droues ();
       broues := false;
     GlMat.translate3 (0. ,0.,6.2*.scale);
-      broues := true;  
+      broues := true;
       droues ();
       broues := false;
   end;;
@@ -453,81 +453,81 @@ let vrlist = (roues (5.) (0.) (1. *.scale) (0.4 *.scale));;
 let vrclist = create_col_list [(5)*6+6] [pneu];;
 
 
-let dvroues () = 
+let dvroues () =
   let rec plist l col bord= (match (l,col) with
      ([],_)                 -> ()
  |(a::b::c::d::e::f::g::h::l, o1::o2::o3::o4::o5::o6::l2) -> dcube (a::b::c::d::e::f::g::h::[]) (o1::o2::o3::o4::o5::o6::[]) (bord);plist l l2 bord
  | _ -> ())
-  in 
-  begin 
+  in
+  begin
     plist vrlist vrclist 1;
   end;;
 
-let dcar vcol1 = 
+let dcar vcol1 =
   let rec plist l col bord= (match (l,col) with
      ([],_)                 -> ()
  |(a::b::c::d::e::f::g::h::l, o1::o2::o3::o4::o5::o6::l2) -> dcube (a::b::c::d::e::f::g::h::[]) (o1::o2::o3::o4::o5::o6::[]) (bord);plist l l2 bord)
-  in 
-    begin 
+  in
+    begin
       plist vlist1 vcol1 !bord;
-      GlMat.translate3 (2.75*.scale ,1.0*.scale,2.0*.scale); 
-      broues := true; 
+      GlMat.translate3 (2.75*.scale ,1.0*.scale,2.0*.scale);
+      broues := true;
       dvroues ();
-      GlMat.translate3 (0. ,0. , 8.0*.scale); 
+      GlMat.translate3 (0. ,0. , 8.0*.scale);
       dvroues ();
-      GlMat.translate3 (-5.5*.scale ,0. ,0.); 
+      GlMat.translate3 (-5.5*.scale ,0. ,0.);
       dvroues ();
-      GlMat.translate3 (0. ,0. ,-8.0*.scale); 
+      GlMat.translate3 (0. ,0. ,-8.0*.scale);
       dvroues ();
-      broues := false; 
-      GlMat.translate3 (0. ,0. ,-1.*. -8.0*.scale); 
-      GlMat.translate3 (-1.*. -5.5*.scale ,0. ,0.); 
-      GlMat.translate3 (0. ,0. , -1.*.8.0*.scale); 
-      GlMat.translate3 (-1.*.2.75*.scale ,-1.*.1.0*.scale,-1.*.2.0*.scale); 
+      broues := false;
+      GlMat.translate3 (0. ,0. ,-1.*. -8.0*.scale);
+      GlMat.translate3 (-1.*. -5.5*.scale ,0. ,0.);
+      GlMat.translate3 (0. ,0. , -1.*.8.0*.scale);
+      GlMat.translate3 (-1.*.2.75*.scale ,-1.*.1.0*.scale,-1.*.2.0*.scale);
 
 
     end;;
 
 
 
-let rec draw_cars2 l = match l with 
+let rec draw_cars2 l = match l with
      [] -> ()
-  |e::l -> let ((x1,y1),(x2,y2),(x3,y3),(x4,y4)) = !e#get_corners in 
+  |e::l -> let ((x1,y1),(x2,y2),(x3,y3),(x4,y4)) = !e#get_corners in
                       GlDraw.begins `quads;
                       GlDraw.color (0.26,0.85,0.24);
                       GlDraw.vertex3 (x1*.scale2,0.01,y1*.scale2*. -1.);
                       GlDraw.vertex3 (x2*.scale2,0.01,y2*.scale2*. -1.);
                       GlDraw.vertex3 (x3*.scale2,0.01,y3*.scale2*. -1.);
                       GlDraw.vertex3 (x4*.scale2,0.01,y4*.scale2*. -1.);
-                      GlDraw.ends ();  
+                      GlDraw.ends ();
            draw_cars2 l;;
 
 
-let draw_cars l = 
-  let rec draw_l l = match l with 
+let draw_cars l =
+  let rec draw_l l = match l with
      [] -> ()
-  |e::l -> let ((x1,y1),(x2,y2),(x3,y3),(x4,y4)) = !e#get_corners   in 
-           let (x,y) = ((x1+.x2)/.2.,(y1+.y2)/.2.)                  in 
-	   let a = (arg !e#get_moteur)*.cdeg                       in  
+  |e::l -> let ((x1,y1),(x2,y2),(x3,y3),(x4,y4)) = !e#get_corners   in
+           let (x,y) = ((x1+.x2)/.2.,(y1+.y2)/.2.)                  in
+	   let a = (arg !e#get_moteur)*.cdeg                       in
 
 	   let col = !e#get_col2                                    in
-	   let col = if col = (2.,2.,2.) then 
+	   let col = if col = (2.,2.,2.) then
              begin
 	       !e#set_col2 (randcol ());!e#get_col2
-             end else col                                           in 
+             end else col                                           in
 	   let vcol1 = (* create_col_list [12] [col] *) col::col::col::col::col::col::col::col::col::col::col::col::[]                  in
                       GlMat.translate3 (x*.scale2,0.,-1.*.y*.scale2);
                       GlDraw.color col;
-	              GlMat.rotate3 (a -. 90.) (0.0, 1.0, 0.0); 
-		      if l = [] then 
+	              GlMat.rotate3 (a -. 90.) (0.0, 1.0, 0.0);
+		      if l = [] then
 		      begin
-     	                GlMat.rotate3 (!e#get_pencher *. ((norm !e#get_vitesse)/.vmax)) (0.0, 0.0, 1.0); 
+     	                GlMat.rotate3 (!e#get_pencher *. ((norm !e#get_vitesse)/.vmax)) (0.0, 0.0, 1.0);
 			dmob ();
 		      end
 		      else dcar vcol1;
-	              GlMat.rotate3 (-1.*.a +. 90.) (0.0, 1.0, 0.0); 
+	              GlMat.rotate3 (-1.*.a +. 90.) (0.0, 1.0, 0.0);
                       GlMat.translate3 (-1.*.x*.scale2,0.,y*.scale2);
-	 
+
 
            draw_l l in
         draw_l l
@@ -549,43 +549,43 @@ let clist2 = create_col_list [18] [(0.66,1.25,0.64)];;
 let clist = create_col_list [18] [(1.4,0.4,0.4)];;
 
 
- 
 
-let draw_fleche (c,r,clist) = 
+
+let draw_fleche (c,r,clist) =
 
   let rec plist l col bord= (match (l,col) with
      ([],_)                 -> ()
  |(a::b::c::d::e::f::g::h::l, o1::o2::o3::o4::o5::o6::l2) -> dcube (a::b::c::d::e::f::g::h::[]) (o1::o2::o3::o4::o5::o6::[]) (bord);plist l l2 bord)
-in 
+in
 
   begin
-    GlMat.rotate3 (-1.*.r) (0.0, 1.0, 0.0);  
+    GlMat.rotate3 (-1.*.r) (0.0, 1.0, 0.0);
     GlMat.translate3 (0.,c,0.);
     plist flist clist (!bord);
     GlMat.translate3 (0.,-.1.*.c,0.);
-    GlMat.rotate3 (r) (0.0, 1.0, 0.0);  
+    GlMat.rotate3 (r) (0.0, 1.0, 0.0);
   end;;
 
 (*pizzerias *)
-let fleche_drawlist () = 
-  let rec b1 l = 
-    match l with 
+let fleche_drawlist () =
+  let rec b1 l =
+    match l with
      []       -> ()
   |c::l ->  let dur = Sys.time () -. temps in let x = c.re and y = c.im in
                     GlMat.translate3 (x*.scale2,0.,-.1.*.y*.scale2);
                     draw_fleche (((cos (dur*.6.))+.1.)*.scale*.15.,dur*.155.,clist2);
                     GlMat.translate3 (-.1.*.x*.scale2,0.,y*.scale2);
                     b1 l;
-                   in 
-  let rec b2 l = 
-    match l with 
+                   in
+  let rec b2 l =
+    match l with
      []       -> ()
   |c::l ->  let dur = Sys.time () -. temps in let x = c.re and y = c.im in
                     GlMat.translate3 (x*.scale2,0.,-.1.*.y*.scale2);
                     draw_fleche (((cos (dur*.6.))+.1.)*.scale*.15.,dur*.155.,clist);
                     GlMat.translate3 (-.1.*.x*.scale2,0.,y*.scale2);
                     b1 l;
-                   in 
+                   in
 
 b1 pizzerias; (*b2 livraison*)
 ;;
@@ -598,13 +598,13 @@ b1 pizzerias; (*b2 livraison*)
 
 (* constantes *)
 
-let b_h1 = 50.*.scale2   and 
+let b_h1 = 50.*.scale2   and
      b_h = 200.*.scale2  and
      b_t = 25            and
      b_e = 50.*.scale2   and
      bt  = ref 0.
 ;;
-let b_h1 = 10.*.scale2   and 
+let b_h1 = 10.*.scale2   and
      b_h = 30.*.scale2  and
      b_t = 25            and
      b_e = 50.*.scale2   and
@@ -614,38 +614,38 @@ let b_h1 = 10.*.scale2   and
 
 
 
-let min3 a b c = if a<=b && a<=c then a 
+let min3 a b c = if a<=b && a<=c then a
                  else if c<=b && c<=a then c else b;;
 
-let create_bat () = 
+let create_bat () =
   let a = b_h1 +. (Random.float b_h) and
       b = b_h1 +. (Random.float b_h) and
       c = b_h1 +. (Random.float b_h) in
   let moy = (a+.c)/.2.               in
   let d = (moy -. b) +. moy          in
-  let (a,b,c,d) = if d < 0. then (a-.d,b-.d,c-.d,0.) 
+  let (a,b,c,d) = if d < 0. then (a-.d,b-.d,c-.d,0.)
                             else (a,b,c,d) in
   [(b_e,a,0.);(0.0,b,0.);(0.0,0.,0.);(b_e,0.,0.);(0.0,c,-1.*.b_e);(b_e,d,-1.*.b_e);(b_e,0.0,-1.*.b_e);(0.0,0.0,-1.*.b_e)];;
 
 let blist = scale_list (create_bat ()) scale;;
 let bclist = create_col_list [6] [randcol ()];;
-    
 
 
-let d1bat () = 
+
+let d1bat () =
   let rec plist l col bord= (match (l,col) with
      ([],_)                 -> ()
  |(a::b::c::d::e::f::g::h::l, o1::o2::o3::o4::o5::o6::l2) -> dcube (a::b::c::d::e::f::g::h::[]) (o1::o2::o3::o4::o5::o6::[]) (bord);plist l l2 bord)
-  in 
-    
+  in
+
       plist blist bclist !bord;;
 
-let d2bat ((a5),b5) = 
+let d2bat ((a5),b5) =
   let rec plist l col bord= (match (l,col) with
      ([],_)                 -> ()
  |(a::b::c::d::e::f::g::h::l, o1::o2::o3::o4::o5::o6::l2) -> dcube (a::b::c::d::e::f::g::h::[]) (o1::o2::o3::o4::o5::o6::[]) (bord);plist l l2 bord)
-  in 
-    
+  in
+
       plist a5 b5 !bord;;
 
 
@@ -654,20 +654,20 @@ let draw_map ()=
   begin
     for j=0 to njj do
       for i=0 to nii do
-        let z = (float_of_int (njj-j))*. -1.  *.taille_case*.scale2   and 
+        let z = (float_of_int (njj-j))*. -1.  *.taille_case*.scale2   and
             y = (float_of_int (i))            *.taille_case*.scale2   in
         match mappy.(j).(i)#get_kind with
                 0 ->  GlMat.translate3 (y,0.,z);
                       d2bat ((mappy.(j).(i)#get_bat),(mappy.(j).(i)#get_col));
                       GlMat.translate3 (y*. -1.,0.,z*. -1.)
-               |_ ->  
+               |_ ->
 		      GlDraw.begins `quads;
                       GlDraw.color col_route;
                       GlDraw.vertex3 (y,0.,z+.taille_case*.scale2-.taille_case*.scale2*.1.);
                       GlDraw.vertex3 (y+.taille_case*.scale2,0.,z+.taille_case*.scale2-.taille_case*.scale2*.1.);
                       GlDraw.vertex3 (y+.taille_case*.scale2,0.,z-.taille_case*.scale2*.1.);
                       GlDraw.vertex3 (y,0.,z-.taille_case*.scale2*.1.);
-                      GlDraw.ends (); 
+                      GlDraw.ends ();
       done;
     done;
   end;;
@@ -677,15 +677,15 @@ let draw_map ()=
 (*   PIZZAS COMPTEUR                         *)
 (*********************************************)
 
-let draw_piz n = 
+let draw_piz n =
   let max = 4       and
       dist = -.0.0015  and
       x = 0.007     and
       y = 0.001     in
 
-  let rec b i = 
+  let rec b i =
     if i>max then GlMat.translate3 (0.,0.,-.1.*.(float_of_int (max-1))*.dist)       (*retour au debut*)
-    else 
+    else
      begin
        GlMat.translate3 (0.,0.,dist);
       GlDraw.begins `quads;
@@ -709,11 +709,11 @@ end;;
 
 (** appellé dans minimob pour eviter de parcourir la liste **)
 
-let draw_speedo v = 
+let draw_speedo v =
   let p = pi/.2./.50. in
   let r = 0.013  in
   let v = ((v*.3.*.pi)/.(vmax*.7.))  in
-  let rec b i = 
+  let rec b i =
     if i<(pi/.2.) then
       begin
        let s = sin i and c = cos i in
@@ -723,13 +723,13 @@ let draw_speedo v =
 (*     GlDraw.color (if v>=i && v<(i+.p) then (0.26,0.24,0.85) else (0.8,0.8,0.8));*)
        GlDraw.vertex3 (-.1.*.c*.r,0.0,-.1.*.s*.r);
        GlDraw.vertex3 (0.0,0.0,0.0);
-       GlDraw.vertex3 (-.1.*.c1*.r,0.0,-.1.*.s1*.r);  
+       GlDraw.vertex3 (-.1.*.c1*.r,0.0,-.1.*.s1*.r);
 
        GlDraw.ends ();
        b (i+.p);
       end
     else ();
-  in 
+  in
      GlDraw.begins `triangles;
        b 0.;
      GlDraw.ends ();;
@@ -744,7 +744,7 @@ if bminimap then
   begin
     for j=0 to njj do
       for i=0 to nii do
-        let z = (float_of_int (njj-j))*. -1.  *.taille_case*.scale3   and 
+        let z = (float_of_int (njj-j))*. -1.  *.taille_case*.scale3   and
             y = (float_of_int (i))                         *.taille_case*.scale3   in
         match mappy.(j).(i)#get_kind with
                 0 -> (* GlDraw.begins `quads;
@@ -760,7 +760,7 @@ if bminimap then
                       GlDraw.vertex3 (y+.taille_case*.scale3,0.,z-.taille_case*.scale3*.2.);
                       GlDraw.vertex3 (y+.taille_case*.scale3,0.,z-.taille_case*.scale3*.3.);
                       GlDraw.vertex3 (y,0.,z-.taille_case*.scale3*.3.);
-                      GlDraw.ends (); 
+                      GlDraw.ends ();
       done;
     done;
   end
@@ -768,12 +768,12 @@ else ()
 ;;
 
 
-let rec draw_minimob l = match l with 
+let rec draw_minimob l = match l with
       [] -> ()
   |e::[] ->
             if bminimap then
-              let ((x1,y1),(x2,y2),(x3,y3),(x4,y4)) = !e#get_corners in 
-              let (x5,y5) = ((x1+.x2+.x3+.x4)/.4.,(y1+.y2+.y3+.y4)/.4. +. 100.) in 
+              let ((x1,y1),(x2,y2),(x3,y3),(x4,y4)) = !e#get_corners in
+              let (x5,y5) = ((x1+.x2+.x3+.x4)/.4.,(y1+.y2+.y3+.y4)/.4. +. 100.) in
                         GlDraw.begins `quads;
                         GlDraw.color (0.26,0.24,0.85);
                         GlDraw.vertex3 ((x5-.50.)*.scale3,0.00,(y5)*.scale3*. -1.);
@@ -802,7 +802,7 @@ let init_gl width height =
     GlClear.color (0.67, 0.82, 1.);
     GlClear.depth 1.0;
     GlClear.clear [`color; `depth];
-    Gl.enable `depth_test; 
+    Gl.enable `depth_test;
     GlMisc.hint `perspective_correction `nicest;
     GlMisc.hint `line_smooth `nicest;
     Gl.enable `line_smooth;
@@ -812,8 +812,8 @@ let init_gl width height =
 ;;
 
 let reshape_cb ~w ~h =
-  let 
-    ratio = (float_of_int w) /. (float_of_int h) 
+  let
+    ratio = (float_of_int w) /. (float_of_int h)
   in
     GlDraw.viewport 0 0 w h;
     GlMat.mode `projection;
@@ -850,7 +850,7 @@ let actif = ref true;; (* inutile je crois, mais j'ai la flemme de verifier, chu
 
 
 let immeubles = ref [];;
-let generatrices = ref [];; 
+let generatrices = ref [];;
 let liste = ref list_mob;;
 let livraison = ref (generate 4);;
 ronde (!mob#get_case) Init immeubles generatrices;
@@ -877,33 +877,33 @@ done;;
 (*   DESSINER                                *)
 (*********************************************)
 
-let rec camera l = match l with 
-  e::[] -> let ((x1,y1),(x2,y2),(x3,y3),(x4,y4)) = !e#get_corners   in 
+let rec camera l = match l with
+  e::[] -> let ((x1,y1),(x2,y2),(x3,y3),(x4,y4)) = !e#get_corners   in
 (*         let (x,y) = (((x1+.x2+.x3+.x4) /. 4.),((y1+.y2+.y3+.y4) /. 4.)) in*)
            let (x,y) = (((x1+.x2) /. 2.),((y1+.y2) /. 2.))                           in
 	   let v = norm !e#get_vitesse                                               in
-	   let a = (arg !e#get_moteur)*.cdeg -. !e#get_pencher*.0.2*.(v/.vmax)       in  
+	   let a = (arg !e#get_moteur)*.cdeg -. !e#get_pencher*.0.2*.(v/.vmax)       in
            GlMat.translate3 (0.0,0.0,-80.*.scale2 +. !axe1 +.  35.*.(v/.vmax)*.scale2);
 	   GlMat.rotate3 (10. -. 5.*.(v/.vmax) +. !a1) (1.0,0.0,0.0);
 	   GlMat.rotate3 (-1.*.a +. 90.) (0.0,1.0,0.0);
            GlMat.translate3 (-1.*.x*.scale2,-.10.*.scale2-. 0.*.(v/.vmax)*.scale2  ,y*.scale2);
 (*print_float v;
-print_string " 
+print_string "
 ";*)
  |e::l  -> camera l
 
 
-let dessiner () = 
+let dessiner () =
 begin
   GlClear.clear [`color; `depth];
   GlMat.load_identity ();
 
-  if !vue then 
+  if !vue then
     begin
       GlMat.translate3 (0.,0.,-1600.*.scale2 +. !axe1);
-      GlMat.rotate3 (90.) (1.0, 0.0, 0.0); 
+      GlMat.rotate3 (90.) (1.0, 0.0, 0.0);
       GlMat.translate3 (((float_of_int (length mappy.(0) -1))*.taille_case*.scale2)/. -2. ,0.,
-                        ((float_of_int (length mappy -1))*.taille_case*.scale2)/. 2.);      
+                        ((float_of_int (length mappy -1))*.taille_case*.scale2)/. 2.);
     end
   else
     camera !liste;
@@ -911,11 +911,11 @@ begin
   draw_map ();
 
   (* draw_cars2 !liste; *)
-  draw_cars  !liste;  
+  draw_cars  !liste;
   fleche_drawlist ();
   GlMat.load_identity ();
   GlMat.translate3 (0.,0.,-0.11);
-  GlMat.rotate3 (90.) (1.0, 0.0, 0.0); 
+  GlMat.rotate3 (90.) (1.0, 0.0, 0.0);
   GlMat.translate3 (-0.057,0.,0.0475);
   draw_minimap ();
   GlMat.translate3 (0.,0.0001,0.);
@@ -959,7 +959,7 @@ let rec treat_ia mob carte  immeubles mob tmp_gen= function
       !ia#chock();
       if (distance !mob !ia) > 212. then   (*supression des vehicules trop éloignés*)
 	treat_ia mob carte immeubles mob tmp_gen tmp
-      else      
+      else
 	ia::treat_ia mob carte immeubles mob tmp_gen tmp;;
 
 
@@ -970,10 +970,10 @@ let rec treat_ia mob carte  immeubles mob tmp_gen= function
 
 let unit_of_bool b = ();;
 let float_of_bool x = if x then 1. else 0.;;
-let bprincipale () = 
+let bprincipale () =
    begin
    (*-----OPERATIONS SUR MOB--------*)
-   
+
    let (mx,my) = (!mob#get_mem_case) and (ax,ay) = (!mob#get_case) in
    let px = ref mx and py = ref my in
    if (!px <> ax)||(!py <> ay) then
@@ -981,36 +981,36 @@ let bprincipale () =
    if (!px < ax) then
    ( ronde (!px+1,!py) Right immeubles generatrices;
    px := !px+1; )
-   else 
+   else
    if (!px > ax) then
    ( ronde (!px-1,!py) Left immeubles generatrices;
    px := !px-1; );
    if (!py < ay) then
    ( ronde (!px,!py+1) Down immeubles generatrices;
    py := !py+1; )
-   else 
+   else
    if (!py > ay) then
    ( ronde (!px,!py-1) Up immeubles generatrices;
-   py := !py-1; );	
+   py := !py-1; );
    end;
    !mob#memo(!px,!py);
-   
+
    if (pres_pizz !mob#get_coord pizzerias) then
    !mob#reload;
-   
+
    if (!mob#get_stock <> 0) then
    (let (l,b) = (retire (!mob#get_coord) !livraison) in
    if b then
    (!mob#livre;
    livraison := (generate 1)@l;););
-   
-   
-   
+
+
+
    let direction= dir_voit !mob in
    !mob#set_dir(direction);
-   
-   
-   
+
+
+
    let virage = (float_of_bool !j) *. (-.pi/.50.5) +. (float_of_bool !l) *.
    (pi/.50.5) in
    ignore (!mob#push((float_of_bool !i) *. 4600.+.10.,virage,(float_of_bool !k) *. (-.10.)));
@@ -1018,11 +1018,11 @@ let bprincipale () =
 
 
     crash_dummies mob immeubles mob;
-    
+
     let tmp_gen = ref (!generatrices) in
-    
+
     liste := treat_ia mob (ref mappy) immeubles mob tmp_gen !liste;
-    
+
     new_cars liste !tmp_gen;
 
     !mob#chock();
@@ -1034,7 +1034,7 @@ end;;
 
 
 let main () =
-  let 
+  let
     width  = iniw and
     height = inih
   in
@@ -1082,9 +1082,9 @@ let main () =
         | _        -> ());
 
 
-    Glut.reshapeFunc reshape_cb;    
+    Glut.reshapeFunc reshape_cb;
     Glut.idleFunc(Some bprincipale);
-    init_gl width height; 
+    init_gl width height;
     Glut.mainLoop ();;
 
 
@@ -1114,10 +1114,10 @@ while !actif do
       |_ -> !mob#push(100000.,0.,0.)); end
     else
       begin actif := !mob#push(0.,0.,0.); end;
-    
+
     let tmp = ref list_mob in
     while (match !tmp with [e] -> false | _ -> true) do
-      begin      
+      begin
 	let ia::reste = !tmp in
 	tmp := reste;
 	if (norm (!ia#get_coord -- !ia#get_ia) < !ia#get_rayon) then
@@ -1142,7 +1142,7 @@ while !actif do
 	!ia#chock();
       end;
     done;
-    
+
     !mob#chock();
 
     draw !mob;
@@ -1150,7 +1150,7 @@ while !actif do
 done;;
 
 auto_synchronize false;;
-open_graph "";;               
+open_graph "";;
 
 
 let draw obj =
@@ -1189,5 +1189,3 @@ let rec dessine = function
   |  e::l -> draw !e; dessine l;;
 
 *)
-
-
