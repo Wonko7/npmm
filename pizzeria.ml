@@ -1,7 +1,7 @@
-  
+
 (*----------------CREATION DE PIZZERIA-----------------------*)
-  
-  
+
+
 let coordonize (x,y) = function
     2 -> (cplx2 (cote * x + (div cote 2)) (500 - (y * cote)))
   |3 -> (cplx2 ((x + 1) * 50) (500 - (y * 50) - (div 50 2)))
@@ -26,7 +26,7 @@ let cote_libre (x,y) =
 
 let rec find_free (min_x,min_y) (max_x,max_y) = function
     100 -> (-1,-1,-1)
-  |i -> 
+  |i ->
       let a = Random.int (max_x-min_x) + min_x
       and b = Random.int (max_y-min_y) + min_y in
       let c = cote_libre (a,b) in
@@ -42,60 +42,60 @@ let piz_create piz_count =
       let mid = div abscisse 2 in
       let (a,b,c) = find_free (0,0) (mid,ordonnee) 1
       and (d,e,f) = find_free (mid,0) (abscisse,ordonnee) 1 in
-      
+
       (* creation liste coord *)
       listify [(a,b,c);(d,e,f)];
-      
+
     else
       let mid = div ordonnee 2 in
       let (a,b,c) = find_free (0,0) (abscisse,mid) 1
       and (d,e,f) = find_free (0,mid) (abscisse,ordonnee) 1 in
-      
+
       (* creation liste coord *)
       listify [(a,b,c);(d,e,f)];
-      
-      
+
+
   else if piz_count = 3 then
     if abscisse > ordonnee then
       let mid = div abscisse 3 in
-      let (a,b,c) = find_free (0,0) (mid,ordonnee) 1 
-      and (d,e,f) = find_free (mid,0) (2*mid,ordonnee) 1 
+      let (a,b,c) = find_free (0,0) (mid,ordonnee) 1
+      and (d,e,f) = find_free (mid,0) (2*mid,ordonnee) 1
       and (g,h,i) = find_free (2*mid,0) (abscisse,ordonnee) 1 in
-      
+
       (* creation liste coord *)
       listify [(a,b,c);(d,e,f);(g,h,i)];
-      
+
     else
       let mid = div ordonnee 3 in
-      let (a,b,c) = find_free (0,0) (abscisse,mid) 1 
+      let (a,b,c) = find_free (0,0) (abscisse,mid) 1
       and (d,e,f) = find_free (0,mid) (abscisse,2*mid) 1
       and (g,h,i) = find_free (0,2*mid) (abscisse,ordonnee) 1 in
-      
+
       (* creation liste coord *)
       listify [(a,b,c);(d,e,f);(g,h,i)];
-      
+
   else if piz_count = 4 then
-    let midx = div abscisse 2 
+    let midx = div abscisse 2
     and midy = div ordonnee 2 in
-    let (a,b,c) = find_free (0,0) (midx,midy) 1 
-    and (d,e,f) = find_free (midx,0) (abscisse,midy) 1 
+    let (a,b,c) = find_free (0,0) (midx,midy) 1
+    and (d,e,f) = find_free (midx,0) (abscisse,midy) 1
     and (g,h,i) = find_free (0,midy) (midx,ordonnee) 1
     and (j,k,l) = find_free (midx,midy) (abscisse,ordonnee) 1 in
-    
+
     (* creation liste coord *)
     listify [(a,b,c);(d,e,f);(g,h,i);(j,k,l)];
-    
+
   else
     let (a,b,c) =  find_free (0,0) (abscisse,ordonnee) 1 in
-    
+
     (* creation liste coord *)
     listify [(a,b,c)];
-    
+
 ;;
 
 let pizzerias = piz_create piz_count;;
 
-let count_pizzerias = 
+let count_pizzerias =
   let rec count = function
       [] -> 0
     |e::l -> 1 + count l;
@@ -117,8 +117,8 @@ let generate n =
   let liste = ref [] in
   for i=1 to n do
     let p::[] = listify [(find_free (0,0) (abscisse,ordonnee) 1)] in
-    let p = ref p in    
-    while not (is_assez_loin !p 50. pizzerias) && (not (est_dedans !p !liste)) do 
+    let p = ref p in
+    while not (is_assez_loin !p 50. pizzerias) && (not (est_dedans !p !liste)) do
       let m::[] = listify [(find_free (0,0) (abscisse,ordonnee) 1)] in
       p := m;
     done;
@@ -130,11 +130,11 @@ let generate n =
 
 let rec plus_proche cm cp = function
     [] -> cp
-  |e::l -> 
+  |e::l ->
       if (norm (cm--cp)) > (norm (e--cp)) then plus_proche cm e l
       else plus_proche cm cp l;;
 
-let c_plus_proche cm l = let e::l = l in plus_proche cm e l;; 
+let c_plus_proche cm l = let e::l = l in plus_proche cm e l;;
 
 let rec draw_liv color = function
     [] -> ()
